@@ -2,7 +2,7 @@
 
 A premium, web application designed to help you master your spending by calculating the true **Cost Per Use** of your belongings.
 
-![Cost Per Use Icon](icon.png)
+<img src="icon.png" width="150" alt="Cost Per Use Icon">
 
 ## 🚀 Features
 
