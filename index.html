@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Per Use | Master Your Spending</title>
+    <meta name="description" content="Track your purchases and see their value increase over time with Cost Per Use.">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <h1>My Inventory</h1>
+                <div class="header-actions">
+                    <div class="custom-dropdown" id="sort-dropdown">
+                        <button class="dropdown-trigger" id="sort-trigger">
+                            <span id="sort-current">Newest</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                        </button>
+                        <div class="dropdown-menu hidden" id="sort-menu">
+                            <div class="dropdown-option selected" data-value="newest">Newest</div>
+                            <div class="dropdown-option" data-value="most-used">Most Used</div>
+                            <div class="dropdown-option" data-value="best-value">Best Value</div>
+                            <div class="dropdown-option" data-value="waste">Waste of Money</div>
+                            <div class="dropdown-option" data-value="price">Highest Price</div>
+                        </div>
+                    </div>
+                    <button id="settings-btn" class="btn-icon" aria-label="Settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M12.22 2h-.44a2 2 0 0 0-2 2 2 2 0 0 1-2 2 2 2 0 0 0-2 2 2 2 0 0 1-2 2 2 2 0 0 0-2 2v.44a2 2 0 0 0 2 2 2 2 0 0 1 2 2 2 2 0 0 0 2 2 2 2 0 0 1 2 2 2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2 2 2 0 0 1 2-2 2 2 0 0 0 2-2 2 2 0 0 1 2-2 2 2 0 0 0 2-2v-.44a2 2 0 0 0-2-2 2 2 0 0 1-2-2 2 2 0 0 0-2-2 2 2 0 0 1-2-2 2 2 0 0 0-2-2ZM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                        </svg>
+                    </button>
+                    <button id="add-item-btn" class="btn-primary" aria-label="Add new item">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content (Inventory List) -->
+        <div class="scroll-wrapper">
+            <main id="inventory-list" class="inventory-grid">
+                <!-- Items will be injected here -->
+                <div class="empty-state">
+                    <p>No items yet. Add your first purchase!</p>
+                </div>
+            </main>
+        </div>
+
+        <!-- Modals -->
+        <div id="modal-container" class="modal-overlay hidden">
+            <!-- Add/Edit Item Modal -->
+            <div id="add-item-modal" class="modal-content glass hidden">
+                <div class="modal-header">
+                    <h2 id="modal-title">Add New Item</h2>
+                    <button class="btn-close" id="close-modal">&times;</button>
+                </div>
+                <form id="add-item-form">
+                    <div class="form-group">
+                        <label for="item-name">Item Name</label>
+                        <input type="text" id="item-name" placeholder="e.g. Gaming Console" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="item-price">Buy Price</label>
+                            <div class="price-input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="item-price" step="0.01" min="0" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="form-group half">
+                            <label for="item-resale">Resale Value</label>
+                            <div class="price-input-wrapper">
+                                <span class="currency-symbol">$</span>
+                                <input type="number" id="item-resale" step="0.01" min="0" placeholder="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="item-category">Category (Optional)</label>
+                        <input type="text" id="item-category" placeholder="e.g. Entertainment">
+                    </div>
+                    <button type="submit" class="btn-submit">Save Item</button>
+                </form>
+            </div>
+
+            <!-- Item Detail Modal -->
+            <div id="item-detail-modal" class="modal-content glass hidden">
+                <div class="modal-header">
+                    <h2 id="detail-title">Item Details</h2>
+                    <button class="btn-close" id="close-detail-modal">&times;</button>
+                </div>
+                <div class="detail-body">
+                    <div class="detail-stat-row">
+                        <span class="detail-label">Current Cost per Use</span>
+                        <span class="detail-value highlight" id="detail-cost-value">$0.00</span>
+                    </div>
+                    <div class="detail-stat-grid">
+                        <div class="detail-stat-box">
+                            <span class="detail-label">Price</span>
+                            <span class="detail-value" id="detail-price-value">$0.00</span>
+                        </div>
+                        <div class="detail-stat-box">
+                            <span class="detail-label">Total Uses</span>
+                            <span class="detail-value" id="detail-uses-value">0</span>
+                        </div>
+                    </div>
+                    <div class="detail-info-list">
+                        <div class="detail-info-item">
+                            <span class="detail-label">Net Cost</span>
+                            <span class="detail-value" id="detail-net-cost">-</span>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-label">Category</span>
+                            <span class="detail-value" id="detail-category-value">-</span>
+                        </div>
+                        <div class="detail-info-item">
+                            <span class="detail-label">Added on</span>
+                            <span class="detail-value" id="detail-date-value">-</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-chart-container">
+                    <canvas id="usage-chart"></canvas>
+                </div>
+                <div class="modal-footer">
+                    <button id="delete-item-btn" class="btn-danger">Delete Item</button>
+                    <button id="edit-item-btn" class="btn-secondary">Edit</button>
+                </div>
+            </div>
+
+            <!-- Custom Confirmation Dialog -->
+            <div id="confirm-dialog" class="modal-content glass confirmation-modal hidden">
+                <div class="modal-header">
+                    <h2>Are you sure?</h2>
+                </div>
+                <div class="modal-body">
+                    <p id="confirm-message">Do you really want to perform this action?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm-cancel" class="btn-secondary">Cancel</button>
+                    <button id="confirm-proceed" class="btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Modal (Sidebar) -->
+        <div id="settings-modal">
+            <div class="sidebar-panel">
+                <div class="sidebar-header">
+                    <h2>Settings</h2>
+                    <button id="close-settings" class="sidebar-close">&times;</button>
+                </div>
+                <div class="settings-body">
+                    <div class="settings-section">
+                        <h3>Data Management</h3>
+                        <p class="settings-desc">Export your inventory data to keep a backup or analyze it in other
+                            tools.</p>
+                        <div class="export-grid">
+                            <button class="btn-export" data-format="json">
+                                <span class="export-icon">{ }</span>
+                                <div class="export-details">
+                                    <span class="export-label">Export as JSON</span>
+                                    <span class="export-desc">Full raw data backup for safekeeping</span>
+                                </div>
+                            </button>
+                            <button class="btn-export" data-format="csv">
+                                <span class="export-icon">▤</span>
+                                <div class="export-details">
+                                    <span class="export-label">Export as CSV</span>
+                                    <span class="export-desc">Spreadsheet format for Excel or Sheets</span>
+                                </div>
+                            </button>
+                            <button class="btn-export" data-format="markdown">
+                                <span class="export-icon">M↓</span>
+                                <div class="export-details">
+                                    <span class="export-label">Export as Markdown</span>
+                                    <span class="export-desc">Formatted report for sharing or notes</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3 id="lang-section-title">Language</h3>
+                        <div id="language-selector" class="language-grid">
+                            <!-- Language buttons injected by JS -->
+                        </div>
+                    </div>
+                    <div class="settings-section">
+                        <h3 id="currency-section-title">Currency</h3>
+                        <div id="currency-selector" class="currency-grid">
+                            <!-- Currency buttons injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/chart.min.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/exporter.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>
