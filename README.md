@@ -27,7 +27,3 @@ A premium, web application designed to help you master your spending by calculat
 2. **Log Use**: Every time you use an item, tap the button. Watch the price drop!
 3. **Analyze**: Open an item's detail view to see its breakdown and cost-per-use graph.
 4. **Offline**: Once opened in your browser, the app is available offline via Service Worker.
-
----
-
-*Build with focus on visual excellence and utility.*
