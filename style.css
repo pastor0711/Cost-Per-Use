@@ -1045,6 +1045,15 @@ input:focus {
     /* Add/confirm modals */
     .confirmation-modal {
         max-width: 90% !important;
+        width: 90%;
+    }
+}
+
+/* Medium screens / Small Desktops */
+@media (max-width: 800px) and (min-width: 641px) {
+    .modal-content.glass {
+        max-width: 95%;
+        width: 95%;
     }
 }
 
