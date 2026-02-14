@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cpu-tracker-v1';
+const CACHE_NAME = 'cpu-tracker-v2';
 const ASSETS = [
     './',
     './index.html',
@@ -9,7 +9,8 @@ const ASSETS = [
     './js/ui.js',
     './js/app.js',
     './icon.png',
-    './js/chart.min.js',
+    './manifest.json',
+    'https://cdn.jsdelivr.net/npm/chart.js',
     'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap'
 ];
 
