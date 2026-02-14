@@ -37,9 +37,17 @@ class Store {
         this.listeners.forEach(callback => callback(this.items));
     }
 
+    generateId() {
+        if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+            return crypto.randomUUID();
+        }
+        // Fallback for non-secure contexts
+        return 'id-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+    }
+
     addItem(name, price, category = '', resaleValue = 0) {
         const newItem = {
-            id: crypto.randomUUID(),
+            id: this.generateId(),
             name,
             price: parseFloat(price),
             resaleValue: parseFloat(resaleValue) || 0,

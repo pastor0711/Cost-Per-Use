@@ -458,6 +458,9 @@ h1 {
     align-items: center;
     box-shadow: var(--shadow-premium);
     transition: var(--transition-smooth);
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .item-card:hover {

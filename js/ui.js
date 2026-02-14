@@ -555,25 +555,31 @@ class UI {
 
     handleSaveItem(e) {
         e.preventDefault();
-        const name = document.getElementById('item-name').value;
-        const price = document.getElementById('item-price').value;
-        const resale = document.getElementById('item-resale').value;
-        const category = document.getElementById('item-category').value;
+        try {
+            const name = document.getElementById('item-name').value;
+            const price = document.getElementById('item-price').value;
+            const resale = document.getElementById('item-resale').value;
+            const category = document.getElementById('item-category').value;
 
-        if (name && price) {
-            const parsedPrice = Math.max(0, parseFloat(price));
-            const parsedResale = Math.max(0, parseFloat(resale) || 0);
+            if (name && price) {
+                const parsedPrice = Math.max(0, parseFloat(price));
+                const parsedResale = Math.max(0, parseFloat(resale) || 0);
 
-            if (this.isEditMode && this.currentEditId) {
-                window.store.updateItem(this.currentEditId, {
-                    name,
-                    price: parsedPrice,
-                    resaleValue: parsedResale,
-                    category
-                });
-            } else {
-                window.store.addItem(name, parsedPrice, category, parsedResale);
+                if (this.isEditMode && this.currentEditId) {
+                    window.store.updateItem(this.currentEditId, {
+                        name,
+                        price: parsedPrice,
+                        resaleValue: parsedResale,
+                        category
+                    });
+                } else {
+                    window.store.addItem(name, parsedPrice, category, parsedResale);
+                }
+                this.toggleModal(false);
             }
+        } catch (error) {
+            console.error('Failed to save item:', error);
+            // Optionally show an alert to the user
             this.toggleModal(false);
         }
     }
